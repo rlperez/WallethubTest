@@ -1,5 +1,8 @@
 package com.ef.Parser;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.Arrays;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -14,7 +17,16 @@ public class Parser {
         Map<String, String> parsedArguments = Arrays.stream(args)
                 .filter(arg -> arg.startsWith("--"))
                 .map(arg -> arg.split("="))
-                .collect(Collectors.toMap(arg -> arg[0].replaceFirst("--", ""), arg -> arg[1]));
+                .collect(Collectors.toMap(arg -> arg[0].replaceFirst("--", ""), arg -> arg[1].toUpperCase()));
 
+        try {
+            Duration duration = Duration.valueOf(parsedArguments.get(DURATION_KEY));
+            int threshold = Integer.parseInt(parsedArguments.get(THRESHOLD_KEY));
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd.HH:mm:ss");
+            LocalDate date = LocalDate.parse(parsedArguments.get(START_DATE_KEY), formatter);
+                        
+        } catch (IllegalArgumentException | DateTimeParseException exception) {
+            exception.printStackTrace();
+        }
     }
 }

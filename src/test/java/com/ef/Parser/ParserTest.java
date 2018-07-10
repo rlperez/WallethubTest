@@ -1,6 +1,8 @@
+package com.ef.Parser;
+
 import org.junit.Test;
 
-public class WallethubTestTest {
+public class ParserTest {
 
     @Test
     public void contextLoad() {

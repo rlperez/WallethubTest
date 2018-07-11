@@ -49,7 +49,7 @@ public class Parser {
         LocalDate endDate = getEndDate(startDate, duration);
 
         Map<String, Long> ipCounts = Files.lines(Paths.get(filePath))
-                .map(l -> l.split("|"))
+                .map(l -> l.split("\\|"))
                 .filter(l -> {
                     LocalDate logDate = LocalDate.parse(l[DATETIME_INDEX], FORMATTER);
                     return endDate.isAfter(logDate) && startDate.isBefore(logDate);

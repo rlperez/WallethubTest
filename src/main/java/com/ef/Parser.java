@@ -59,7 +59,8 @@ public class Parser {
                 .map(l -> l.split("\\|"))
                 .filter(l -> {
                     LocalDateTime logDate = LocalDateTime.parse(l[DATETIME_INDEX], LOG_DATE_FORMATTER);
-                    return endDate.isAfter(logDate) && startDate.isBefore(logDate);
+                    return (endDate.isAfter(logDate) && startDate.isBefore(logDate)) ||
+                            (endDate.isEqual(logDate) || startDate.isEqual(logDate));
                 })
                 .collect(Collectors.groupingBy(l -> l[IP_INDEX], counting()));
 

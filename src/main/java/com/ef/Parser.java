@@ -31,6 +31,9 @@ public class Parser {
 
     private static final int DATETIME_INDEX = 0;
     private static final int IP_INDEX = 1;
+    private static final int REQUEST_INDEX = 2;
+    private static final int RESPONSE_CODE_INDEX = 3;
+    private static final int USER_AGENT_INDEX = 4;
 
     public static void main(String[] args) {
         Map<String, String> parsedArguments = Arrays.stream(args)

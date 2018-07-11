@@ -21,6 +21,12 @@ class LogEntry {
 
     private String ip;
 
+    private String request;
+
+    private int responseCode;
+
+    private String userAgent;
+
     private String comment;
 }
 

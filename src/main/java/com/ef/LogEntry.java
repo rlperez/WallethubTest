@@ -1,4 +1,4 @@
 package com.ef;
 
-public class LogEntry {
+class LogEntry {
 }

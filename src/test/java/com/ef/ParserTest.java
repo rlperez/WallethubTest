@@ -25,8 +25,9 @@ public class ParserTest {
     @Test
     public void verifyGivenTestCase() throws IOException {
         // java -cp "parser.jar" com.ef.Parser --startDate=2017-01-01.00:00:00 --duration=daily --threshold=500
+        Parser parser = new Parser();
         LocalDateTime startDate = LocalDateTime.parse("2017-01-01 00:00:00", FORMATTER);
-        Set<String> ips = Parser.getIpAddresses("out/test/resources/access.log", startDate, Duration.DAILY, 500);
+        Set<String> ips = parser.getIpAddresses("out/test/resources/access.log", startDate, Duration.DAILY, 500);
 
         assertThat(ips)
                 .isNotEmpty()

@@ -5,7 +5,6 @@ import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
 import java.io.IOException;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Set;
@@ -31,7 +30,23 @@ public class ParserTest {
 
         assertThat(ips)
                 .isNotEmpty()
-                .hasSize(1)
-                .containsExactly("192.168.102.136");
+                .hasSize(15)
+                .containsExactlyInAnyOrder(
+                        "192.168.203.111",
+                        "192.168.51.205",
+                        "192.168.185.164",
+                        "192.168.129.191",
+                        "192.168.31.26",
+                        "192.168.52.153",
+                        "192.168.33.16",
+                        "192.168.162.248",
+                        "192.168.38.77",
+                        "192.168.62.176",
+                        "192.168.219.10",
+                        "192.168.199.209",
+                        "192.168.143.177",
+                        "192.168.102.136",
+                        "192.168.206.141"
+                );
     }
 }

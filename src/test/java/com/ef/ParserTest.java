@@ -5,9 +5,12 @@ import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Set;
+import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -27,7 +30,8 @@ public class ParserTest {
         // java -cp "parser.jar" com.ef.Parser --startDate=2017-01-01.00:00:00 --duration=daily --threshold=500
         Parser parser = new Parser();
         LocalDateTime startDate = LocalDateTime.parse("2017-01-01 00:00:00", FORMATTER);
-        Set<String> ips = parser.getIpAddresses("out/test/resources/access.log", startDate, Duration.DAILY, 500);
+        Stream<String> fileLines = Files.lines(Paths.get("out/test/resources/access.log"));
+        Set<String> ips = parser.getIpAddresses(fileLines, startDate, Duration.DAILY, 500);
 
         assertThat(ips)
                 .isNotEmpty()

@@ -27,6 +27,7 @@ public class Parser {
     private static final DateTimeFormatter LOG_DATE_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS");
     private static final DateTimeFormatter ARG_DATE_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd.HH:mm:ss");
     private static final String DEFAULT_FILE_PATH = "access.log";
+    private static final String COMMENT_TEMPLATE = "IP %s was encountered %d times between times %s and %s.";
 
     private static final int DATETIME_INDEX = 0;
     private static final int IP_INDEX = 1;
@@ -46,14 +47,14 @@ public class Parser {
 
             Parser parser = new Parser();
             Stream<String> fileLines = parser.getFileLineStream(filePath);
-            Set<String> ips = parser.getIpAddresses(fileLines, date, duration, threshold);
-            parser.logIpAddresses(ips);
+            Set<LogEntry> logEntries = parser.getIpAddresses(fileLines, date, duration, threshold);
+            parser.logIpAddresses(logEntries);
         } catch (IllegalArgumentException | DateTimeParseException | IOException exception) {
             exception.printStackTrace();
         }
     }
 
-    public Set<String> getIpAddresses(Stream<String> lines, LocalDateTime startDate, Duration duration, int threshold) throws IOException {
+    public Set<LogEntry> getIpAddresses(Stream<String> lines, LocalDateTime startDate, Duration duration, int threshold) throws IOException {
         LocalDateTime endDate = getEndDate(startDate, duration);
         Map<String, Long> ipCounts = lines
                 .map(l -> l.split("\\|"))
@@ -67,12 +68,15 @@ public class Parser {
         return ipCounts.entrySet()
                 .stream()
                 .filter(count -> count.getValue() >= threshold)
-                .map(Map.Entry::getKey)
+                .map(entry -> new LogEntry(
+                        0,
+                        entry.getKey(),
+                        String.format(COMMENT_TEMPLATE, entry.getKey(), entry.getValue(), startDate, endDate)))
                 .collect(Collectors.toSet());
     }
 
-    private void logIpAddresses(Set<String> ips) {
-        ips.forEach(System.out::println);
+    private void logIpAddresses(Set<LogEntry> logEntries) {
+        logEntries.forEach(entry -> System.out.println(entry.getIp()));
     }
 
     private LocalDateTime getEndDate(LocalDateTime startDate, Duration duration) {

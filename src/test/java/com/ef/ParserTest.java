@@ -10,6 +10,7 @@ import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Set;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -31,7 +32,10 @@ public class ParserTest {
         Parser parser = new Parser();
         LocalDateTime startDate = LocalDateTime.parse("2017-01-01 00:00:00", FORMATTER);
         Stream<String> fileLines = Files.lines(Paths.get("out/test/resources/access.log"));
-        Set<String> ips = parser.getIpAddresses(fileLines, startDate, Duration.DAILY, 500);
+        Set<String> ips = parser.getIpAddresses(fileLines, startDate, Duration.DAILY, 500)
+                .stream()
+                .map(LogEntry::getIp)
+                .collect(Collectors.toSet());
 
         assertThat(ips)
                 .isNotEmpty()

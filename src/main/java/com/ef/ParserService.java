@@ -44,8 +44,11 @@ public class ParserService {
     void persistLogFileToDb(String filePath, LocalDateTime startDate, Duration duration, int threshold) throws IOException {
         final Stream<String> allLogsStream = getFileLineStream(filePath);
         final Stream<String> blockedLogsStream = getFileLineStream(filePath);
-        CompletableFuture.runAsync(() -> persistAllLogs(allLogsStream));
-        CompletableFuture.runAsync(() -> persistBlockedLogs(blockedLogsStream, startDate, duration, threshold));
+        CompletableFuture.allOf(
+                CompletableFuture.runAsync(() -> persistAllLogs(allLogsStream)),
+                CompletableFuture.runAsync(() -> persistBlockedLogs(blockedLogsStream, startDate, duration, threshold))
+        ).join();
+
     }
 
     private void persistAllLogs(Stream<String> lines) {

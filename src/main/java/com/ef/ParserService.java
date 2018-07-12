@@ -78,10 +78,13 @@ public class ParserService {
         Set<BlockedIpLogEntry> blockedIps = ipCounts.entrySet()
                 .stream()
                 .filter(count -> count.getValue() >= threshold)
-                .map(entry -> new BlockedIpLogEntry(
-                        0,
-                        entry.getKey(),
-                        String.format(COMMENT_TEMPLATE, entry.getKey(), entry.getValue(), startDate, endDate)))
+                .map(entry -> {
+                    System.out.println(entry.getKey());
+                    return new BlockedIpLogEntry(
+                            0,
+                            entry.getKey(),
+                            String.format(COMMENT_TEMPLATE, entry.getKey(), entry.getValue(), startDate, endDate));
+                })
                 .collect(Collectors.toSet());
 
         blockedLogEntryRepository.saveAll(blockedIps);

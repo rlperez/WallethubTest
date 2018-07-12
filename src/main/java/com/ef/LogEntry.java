@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 
 @Entity
 @Table
@@ -19,6 +20,8 @@ class LogEntry {
     @SequenceGenerator(name = "logEntryIdSeqGen", allocationSize = 1)
     private long id;
 
+    private LocalDateTime timestamp;
+
     private String ip;
 
     private String request;
@@ -26,8 +29,6 @@ class LogEntry {
     private int responseCode;
 
     private String userAgent;
-
-    private String comment;
 }
 
 

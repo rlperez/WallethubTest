@@ -13,19 +13,13 @@ import javax.persistence.*;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-class LogEntry {
+class BlockedIpLogEntry {
     @Id
-    @GeneratedValue(generator = "logEntryIdSeqGen")
-    @SequenceGenerator(name = "logEntryIdSeqGen", allocationSize = 1)
+    @GeneratedValue(generator = "blockedIpLogEntryIdSeqGen")
+    @SequenceGenerator(name = "blockedIpLogEntryIdSeqGen", allocationSize = 1)
     private long id;
 
     private String ip;
-
-    private String request;
-
-    private int responseCode;
-
-    private String userAgent;
 
     private String comment;
 }

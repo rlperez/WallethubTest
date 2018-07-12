@@ -13,6 +13,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -41,8 +42,10 @@ public class ParserService {
     }
 
     void persistLogFileToDb(String filePath, LocalDateTime startDate, Duration duration, int threshold) throws IOException {
-        persistAllLogs(getFileLineStream(filePath));
-        persistBlockedLogs(getFileLineStream(filePath), startDate, duration, threshold);
+        final Stream<String> allLogsStream = getFileLineStream(filePath);
+        final Stream<String> blockedLogsStream = getFileLineStream(filePath);
+        CompletableFuture.runAsync(() -> persistAllLogs(allLogsStream));
+        CompletableFuture.runAsync(() -> persistBlockedLogs(blockedLogsStream, startDate, duration, threshold));
     }
 
     private void persistAllLogs(Stream<String> lines) {

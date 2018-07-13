@@ -13,7 +13,6 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Map;
 import java.util.Set;
-import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -44,14 +43,13 @@ public class ParserService {
     void persistLogFileToDb(String filePath, LocalDateTime startDate, Duration duration, int threshold) throws IOException {
         final Stream<String> allLogsStream = getFileLineStream(filePath);
         final Stream<String> blockedLogsStream = getFileLineStream(filePath);
-        CompletableFuture.allOf(
-                CompletableFuture.runAsync(() -> persistAllLogs(allLogsStream)),
-                CompletableFuture.runAsync(() -> persistBlockedLogs(blockedLogsStream, startDate, duration, threshold))
-        ).join();
-
+        persistBlockedLogs(blockedLogsStream, startDate, duration, threshold);
+        persistAllLogs(allLogsStream);
     }
 
     private void persistAllLogs(Stream<String> lines) {
+        // This is way too slow through JPA and Hibernate. It needs to be done more natively I think.
+        System.out.println("Persisting logs...");
         Set<LogEntry> logEntries = lines.map(l -> {
             String[] line = l.split("\\|");
             LocalDateTime logDate = LocalDateTime.parse(line[DATETIME_INDEX], LOG_DATE_FORMATTER);
@@ -68,6 +66,7 @@ public class ParserService {
     }
 
     private void persistBlockedLogs(Stream<String> lines, LocalDateTime startDate, Duration duration, int threshold) {
+        System.out.println("Blocked IPs...");
         LocalDateTime endDate = getEndDate(startDate, duration);
         Map<String, Long> ipCounts = lines
                 .map(l -> l.split("\\|"))

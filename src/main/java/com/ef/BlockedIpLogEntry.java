@@ -24,6 +24,8 @@ class BlockedIpLogEntry implements Serializable {
     private String ip;
 
     private String comment;
+
+    private long requestCount;
 }
 
 

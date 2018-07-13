@@ -85,7 +85,8 @@ public class ParserService {
                     return new BlockedIpLogEntry(
                             0,
                             entry.getKey(),
-                            String.format(COMMENT_TEMPLATE, entry.getKey(), entry.getValue(), startDate, endDate));
+                            String.format(COMMENT_TEMPLATE, entry.getKey(), entry.getValue(), startDate, endDate),
+                            entry.getValue());
                 })
                 .collect(Collectors.toSet());
 

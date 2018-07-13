@@ -4,8 +4,10 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Entity
 @Table
@@ -13,10 +15,10 @@ import javax.persistence.*;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-class BlockedIpLogEntry {
+class BlockedIpLogEntry implements Serializable {
     @Id
-    @GeneratedValue(generator = "blockedIpLogEntryIdSeqGen")
-    @SequenceGenerator(name = "blockedIpLogEntryIdSeqGen", allocationSize = 1)
+    @GeneratedValue(generator = "blockedIpLogEntryIdSeqGen", strategy = GenerationType.AUTO)
+    @GenericGenerator(name = "blockedIpLogEntryIdSeqGen", strategy = "increment")
     private long id;
 
     private String ip;

@@ -4,8 +4,10 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
 @Entity
@@ -14,10 +16,10 @@ import java.time.LocalDateTime;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-class LogEntry {
+class LogEntry implements Serializable {
     @Id
-    @GeneratedValue(generator = "logEntryIdSeqGen")
-    @SequenceGenerator(name = "logEntryIdSeqGen", allocationSize = 1)
+    @GeneratedValue(generator = "logEntryIdSeqGen", strategy = GenerationType.AUTO)
+    @GenericGenerator(name = "logEntryIdSeqGen", strategy = "increment")
     private long id;
 
     private LocalDateTime timestamp;

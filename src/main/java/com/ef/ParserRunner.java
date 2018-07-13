@@ -23,8 +23,12 @@ public class ParserRunner implements CommandLineRunner {
     private static final String FILE_PATH_KEY = "file";
     private static final DateTimeFormatter ARG_DATE_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd.HH:mm:ss");
 
-    @Autowired
     private ParserService parserService;
+
+    @Autowired
+    public ParserRunner(ParserService parserService) {
+        this.parserService = parserService;
+    }
 
     @Override
     public void run(String... args) throws Exception {

@@ -15,7 +15,7 @@ import java.util.stream.Collectors;
 
 @Getter
 @Component
-public class ParserRunner implements CommandLineRunner {
+public class Parser implements CommandLineRunner {
 
     private static final String DURATION_KEY = "duration";
     private static final String THRESHOLD_KEY = "threshold";
@@ -26,7 +26,7 @@ public class ParserRunner implements CommandLineRunner {
     private ParserService parserService;
 
     @Autowired
-    public ParserRunner(ParserService parserService) {
+    public Parser(ParserService parserService) {
         this.parserService = parserService;
     }
 
